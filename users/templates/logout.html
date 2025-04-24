@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>התנתקות - CampusFlow</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #111827;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: #f3f4f6;
+    }
+
+    .logout-container {
+      background-color: #1f2937;
+      padding: 40px 50px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      color: #d1d5db;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-login {
+      background-color: #8b5cf6;
+    }
+
+    .btn-login:hover {
+      background-color: #7c3aed;
+    }
+
+    .btn-home {
+      background-color: #10b981;
+    }
+
+    .btn-home:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logout-container">
+    <h2>התנתקת בהצלחה</h2>
+    <p>תודה שהשתמשת במערכת CampusFlow.</p>
+
+    <div class="button-group">
+      <a href="{% url 'home' %}" class="btn btn-home">דף הבית</a>
+      <a href="{% url 'login' %}" class="btn btn-login">התחברות מחדש</a>
+    </div>
+  </div>
+
+</body>
+</html>

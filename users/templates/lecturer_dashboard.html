@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דשבורד מרצה - CampusFlow</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-links button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>דשבורד מרצה</h1>
+    <div class="nav-links">
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">התנתקות</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>ברוך הבא לדשבורד המרצה</h2>
+    <p>כאן תוכל לעיין בבקשות, לעדכן סטטוסים ולספק משוב לסטודנטים.</p>
+  </div>
+
+</body>
+</html>
