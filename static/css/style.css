@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("../images/bg_home.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  position: relative;
+}
+
+/* ✅ כותרת למעלה */
+.top-title {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  color: #e3caa5; /* בז’ זהוב בהיר */
+}
+
+.top-title h1 {
+  font-size: 2.8em;
+  margin-bottom: 0.2em;
+  color: #f5deb3; /* חום בהיר – wheat */
+}
+
+.top-title h2 {
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #deb887; /* burlywood */
+}
+
+/* ✅ פסקה באמצע */
+.middle-paragraph {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #f4e1c1; /* בז’ קרמי עדין */
+  font-size: 1.1em;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+/* ✅ כפתורים בתחתית */
+.bottom-buttons {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.btn-orange { background-color: #f57c00; }
+.btn-orange:hover { background-color: #e65100; }
+
+.btn-green { background-color: #388e3c; }
+.btn-green:hover { background-color: #2e7d32; }
