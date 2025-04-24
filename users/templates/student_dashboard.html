@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דשבורד סטודנט - CampusFlow</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-links button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>דשבורד סטודנט</h1>
+    <div class="nav-links">
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">התנתקות</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>ברוך הבא לדשבורד הסטודנט</h2>
+    <p>כאן תוכל להגיש בקשות ולעקוב אחרי הסטטוס שלך.</p>
+  </div>
+
+</body>
+</html>
