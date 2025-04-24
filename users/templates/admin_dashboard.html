@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דשבורד מנהל - CampusFlow</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3; /* בז’ בהיר */
+      font-size: 1.6em;
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-links a, .nav-links button {
+      background-color: #6b7280;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .nav-links button:hover {
+      background-color: #4b5563;
+    }
+
+    .dashboard-content {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .dashboard-content h2 {
+      font-size: 2.2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>דשבורד מנהל - CampusFlow</h1>
+    <div class="nav-links">
+      <a href="{% url 'user_list' %}">רשימת משתמשים</a>
+      <a href="{% url 'profile' %}">החשבון שלי</a>
+      <a href="{% url 'change_password' %}">שינוי סיסמה</a>
+      <a href="{% url 'create_user' %}">יצירת משתמש</a>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">התנתקות</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <h2>ברוך הבא לדשבורד הניהול</h2>
+    <p>כאן תוכל לנהל משתמשים, סיסמאות והרשאות בקלות ובנוחות</p>
+  </div>
+
+</body>
+</html>
