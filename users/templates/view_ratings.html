@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דירוגי סטודנטים - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .nav-links a {
+      background-color: #6b7280;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: bold;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+
+    .nav-links a:hover {
+      background-color: #4b5563;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #1f2937;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid #374151;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1f2937;
+      color: #f3f4f6;
+      font-size: 1.1em;
+    }
+
+    .average-rating {
+      font-size: 1.5em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>דירוגי סטודנטים</h1>
+  <div class="nav-links">
+    <a href="{% url 'admin_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>משוב משתמשים</h2>
+
+
+  <table>
+    <thead>
+      <tr>
+        <th>דירוג</th>
+        <th>הערה</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rating in ratings %}
+      <tr>
+        <td>{{ rating.rating }}</td>
+        <td>{{ rating.comment|default:"-" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3">אין עדיין דירוגים להצגה.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
