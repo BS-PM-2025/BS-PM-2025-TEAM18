@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>ניהול בקשות - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.6em;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #1f2937;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #374151;
+      text-align: center;
+    }
+
+    th {
+      background-color: #374151;
+      color: #f5deb3;
+    }
+
+    tr:hover {
+      background-color: #2d3748;
+    }
+
+    a.update-button {
+      background-color: #10b981;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.update-button:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>ניהול בקשות</h1>
+</div>
+
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>סטודנט</th>
+        <th>נושא</th>
+        <th>סטטוס נוכחי</th>
+        <th>תאריך יצירה</th>
+        <th>עדכון סטטוס</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for req in requests %}
+      <tr>
+        <td>{{ req.student.username }}</td>
+        <td>{{ req.title }}</td>
+        <td>{{ req.status }}</td>
+        <td>{{ req.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+          <a href="{% url 'update_request_status' req.id %}" class="update-button">עדכן סטטוס</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">אין בקשות להצגה</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
