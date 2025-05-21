@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>שלח דירוג - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links a, .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      width: 140px;
+    }
+
+    .nav-links a:hover, .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background-color: #1f2937;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-container label {
+      display: block;
+      margin-top: 15px;
+      text-align: right;
+    }
+
+    .form-container select, 
+    .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+      background-color: #374151;
+      color: white;
+    }
+
+    .form-container button {
+      margin-top: 20px;
+      background-color: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .form-container button:hover {
+      background-color: #059669;
+    }
+
+    /* ✅ עיצוב להודעות */
+    .message-success {
+      background-color: #10b981;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+    .message-error {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>שליחת דירוג</h1>
+  <div class="nav-links">
+    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <div class="form-container">
+    <h2>דרג את השירות</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}message-success{% else %}message-error{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      
+      <label for="rating">בחר דירוג (1–5):</label>
+      <select name="rating" required>
+        <option value="">בחר דירוג</option>
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+      </select>
+
+      <label for="comment">הערה:</label>
+      <textarea name="comment" rows="4" placeholder="כתבו לנו מה דעתכם..." required></textarea>
+
+      <button type="submit">שלח דירוג</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
