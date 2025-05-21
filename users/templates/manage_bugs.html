@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ניהול באגים - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      width: 140px;
+      text-align: center;
+    }
+
+    .nav-links a:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #1f2937;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid #374151;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1f2937;
+      color: #f3f4f6;
+      font-size: 1.1em;
+    }
+
+    form select, form button {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+    }
+
+    form button {
+      background-color: #10b981;
+      color: white;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>ניהול באגים</h1>
+  <div class="nav-links">
+    <a href="{% url 'admin_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>רשימת באגים</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>משתמש</th>
+        <th>כותרת</th>
+        <th>תיאור</th>
+        <th>סטטוס</th>
+        <th>פעולה</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bug in bugs %}
+      <tr>
+        <td>{{ bug.user.username }}</td>
+        <td>{{ bug.title }}</td>
+        <td>{{ bug.description }}</td>
+        <td>{{ bug.status }}</td>
+        <td>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="bug_id" value="{{ bug.id }}">
+            <select name="status" required>
+              <option value="חדש" {% if bug.status == 'חדש' %}selected{% endif %}>חדש</option>
+              <option value="טופל" {% if bug.status == 'טופל' %}selected{% endif %}>טופל</option>
+            </select>
+            <button type="submit">עדכן סטטוס</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">אין באגים כרגע 🎉</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
