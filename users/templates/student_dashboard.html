@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>דשבורד סטודנט - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links a, .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      width: 140px;
+    }
+
+    .nav-links a:hover, .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+
+    /* 🔔 סגנון פעמון */
+    .notification-bell {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .notification-bell img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background-color: #1f2937;
+      min-width: 220px;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      z-index: 1;
+      border-radius: 8px;
+    }
+
+    .dropdown-content div {
+      color: #f3f4f6;
+      padding: 12px 16px;
+      text-align: right;
+      border-bottom: 1px solid #374151;
+    }
+
+    .dropdown-content div:hover {
+      background-color: #374151;
+    }
+
+    /* 🤖 עיצוב בוט */
+    .chatbot-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .chatbot-window {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      left: 30px;
+      width: 300px;
+      background-color: #1f2937;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .chatbot-header {
+      background-color: #10b981;
+      padding: 10px;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .chatbot-body {
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      color: #f3f4f6;
+    }
+
+    .chatbot-body div {
+      margin-bottom: 10px;
+      text-align: right;
+    }
+
+    .chatbot-input {
+      display: flex;
+      padding: 10px;
+      background-color: #111827;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .chatbot-input button {
+      margin-left: 5px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>דשבורד סטודנט</h1>
+  <div class="nav-links">
+    <div class="notification-bell" id="notificationBell">
+      <img src="{% static 'images/bell.png' %}" alt="התראות" style="width:30px; height:30px;">
+      <div id="notificationDropdown" class="dropdown-content"></div>
+    </div>
+    <a href="{% url 'submit_request' %}">הגש בקשה</a>
+    <a href="{% url 'student_requests' %}">הבקשות שלי</a>
+    <a href="{% url 'student_history' %}">היסטוריית בקשות</a>
+    <a href="{% url 'update_profile' %}">עדכון פרטים</a>
+    <a href="{% url 'submit_bug' %}">דווח באג</a>
+    <a href="{% url 'submit_rating' %}">דירוג מערכת</a>
+
+
+    
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <h2>ברוך הבא לדשבורד הסטודנט</h2>
+  <p>כאן תוכל להגיש בקשות, לעקוב אחרי סטטוס, ולהתייעץ עם הצ'אט בוט שלנו!</p>
+</div>
+
+<!-- 🤖 כפתור צ'אט -->
+<button class="chatbot-button" onclick="toggleChatbot()">🤖</button>
+
+<!-- 🤖 חלון צ'אט -->
+<div class="chatbot-window" id="chatbotWindow">
+  <div class="chatbot-header">CampusBot</div>
+  <div class="chatbot-body" id="chatBody"></div>
+  <div class="chatbot-input">
+    <input type="text" id="chatInput" placeholder="הקלד שאלה...">
+    <button onclick="sendQuestion()">שלח</button>
+  </div>
+</div>
+
+<!-- 🔔 סקריפט התראות + 🤖 צ'אט -->
+<script>
+  const bell = document.getElementById('notificationBell');
+  const dropdown = document.getElementById('notificationDropdown');
+
+  bell.addEventListener('click', () => {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  });
+
+  async function fetchNotifications() {
+    const response = await fetch('{% url "notifications_api" %}');
+    const data = await response.json();
+    dropdown.innerHTML = '';
+
+    if (data.notifications.length === 0) {
+      dropdown.innerHTML = '<div>אין התראות חדשות</div>';
+    } else {
+      data.notifications.forEach(note => {
+        const div = document.createElement('div');
+        div.textContent = note;
+        dropdown.appendChild(div);
+      });
+    }
+  }
+
+  setInterval(fetchNotifications, 3000);
+
+  // 🤖 צ'אט בוט
+  function toggleChatbot() {
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    chatbotWindow.style.display = chatbotWindow.style.display === 'block' ? 'none' : 'block';
+  }
+
+  async function sendQuestion() {
+    const input = document.getElementById('chatInput');
+    const chatBody = document.getElementById('chatBody');
+    const question = input.value.trim();
+    if (!question) return;
+
+    const userDiv = document.createElement('div');
+    userDiv.textContent = "👤 " + question;
+    chatBody.appendChild(userDiv);
+
+    const response = await fetch('{% url "chatbot_api" %}?q=' + encodeURIComponent(question));
+    const data = await response.json();
+
+    const botDiv = document.createElement('div');
+    botDiv.textContent = "🤖 " + data.answer;
+    chatBody.appendChild(botDiv);
+
+    input.value = '';
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+</script>
+
+</body>
+</html>
