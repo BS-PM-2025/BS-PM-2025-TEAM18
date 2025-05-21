@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>הגשת בקשה - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      width: 140px;
+    }
+
+    .nav-links a:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 500px;
+      background-color: #1f2937;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .form-container label {
+      display: block;
+      margin-top: 15px;
+      text-align: right;
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .form-container button {
+      margin-top: 20px;
+      background-color: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .form-container button:hover {
+      background-color: #059669;
+    }
+
+    /* ✅ הודעות */
+    .message-success {
+      background-color: #10b981;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    .message-error {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>הגשת בקשה</h1>
+  <div class="nav-links">
+    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="form-container">
+    <h2>הגש בקשה חדשה</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}message-success{% else %}message-error{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      
+      <label for="id_title">נושא הבקשה:</label>
+      {{ form.title }}
+      
+      <label for="id_description">תיאור הבקשה:</label>
+      {{ form.description }}
+      
+      <label for="id_request_type">סוג הבקשה:</label>
+      {{ form.request_type }}
+      
+      <button type="submit">שלח בקשה</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
