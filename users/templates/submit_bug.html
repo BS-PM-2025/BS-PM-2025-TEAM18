@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דיווח באג - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      width: 140px;
+      text-align: center;
+    }
+
+    .nav-links a:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #1f2937;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #00000040;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #f3f4f6;
+      color: #111827;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #10b981;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+
+    .success-message {
+      background-color: #10b981;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>דיווח באג</h1>
+  <div class="nav-links">
+    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>דווח על בעיה</h2>
+
+  {% if success %}
+    <div class="success-message">
+      הבאג נשלח בהצלחה! 🙌
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="כותרת הבעיה" required>
+    <textarea name="description" placeholder="תיאור הבעיה" rows="5" required></textarea>
+    <button type="submit">שלח דיווח</button>
+  </form>
+
+</div>
+
+</body>
+</html>

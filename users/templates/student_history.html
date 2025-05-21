@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>היסטוריית בקשות - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      width: 140px;
+      text-align: center;
+    }
+
+    .nav-links a:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #1f2937;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid #374151;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1f2937;
+      color: #f3f4f6;
+      font-size: 1.1em;
+    }
+
+    /* צבעים לסטטוסים */
+    .status-sent {
+      color: #facc15;
+      font-weight: bold;
+    }
+    .status-pending {
+      color: #f59e0b;
+      font-weight: bold;
+    }
+    .status-approved {
+      color: #22c55e;
+      font-weight: bold;
+    }
+    .status-rejected {
+      color: #ef4444;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>היסטוריית בקשות</h1>
+  <div class="nav-links">
+    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>כל הבקשות שהגשת</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>נושא</th>
+        <th>תיאור</th>
+        <th>סוג בקשה</th>
+        <th>סטטוס</th>
+        <th>תאריך הגשה</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in requests %}
+      <tr>
+        <td>{{ request.title }}</td>
+        <td>{{ request.description }}</td>
+        <td>{{ request.request_type }}</td>
+        <td class="
+          {% if request.status == 'נשלחה' %}
+            status-sent
+          {% elif request.status == 'בטיפול' %}
+            status-pending
+          {% elif request.status == 'אושרה' %}
+            status-approved
+          {% elif request.status == 'נדחתה' %}
+            status-rejected
+          {% endif %}
+        ">
+          {{ request.status }}
+        </td>
+        <td>{{ request.created_at|date:"d/m/Y H:i" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">לא נמצאו בקשות קודמות.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
