@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>אישור בקשה</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      min-height: 100vh;
+    }
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      flex-direction: row-reverse;         /* RTL: כפתורים ולוגו מימין */
+      justify-content: flex-start;
+      align-items: center;
+      padding: 18px 32px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.18);
+    }
+    .logo {
+      color: #2563eb;
+      font-size: 1.45em;
+      font-weight: bold;
+      margin-right: 28px;
+      margin-left: 10px;
+      letter-spacing: 0.5px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+    .nav-btn, .logout-btn {
+      background-color: #ef4444;   /* אדום */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.22s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .nav-btn:hover, .logout-btn:hover {
+      background-color: #dc2626;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 90vh;
+    }
+    .confirmation-card {
+      background: #232d3b;
+      color: #f3f4f6;
+      border-radius: 16px;
+      padding: 38px 36px 32px 36px;
+      box-shadow: 0 2px 22px rgba(0,0,0,0.22);
+      max-width: 390px;
+      width: 90%;
+      text-align: center;
+      margin-top: 28px;
+    }
+    .confirmation-card h1 {
+      color: #3b82f6;
+      margin-bottom: 12px;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .confirmation-card p {
+      color: #e5e7eb;
+      margin-bottom: 18px;
+      font-size: 1.09em;
+      line-height: 1.6;
+    }
+    .confirmation-card strong {
+      color: #fff;
+      font-weight: bold;
+    }
+    .success-check {
+      font-size: 54px;
+      color: #22c55e;
+      margin-bottom: 10px;
+    }
+    .action-btn {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 13px 0;
+      border-radius: 8px;
+      font-size: 1.08em;
+      font-weight: bold;
+      cursor: pointer;
+      width: 82%;
+      margin: auto;
+      margin-top: 6px;
+      transition: background 0.18s;
+      display: block;
+    }
+    .action-btn:hover {
+      background: #1d4ed8;
+    }
+    @media (max-width: 500px) {
+      .confirmation-card { padding: 25px 7vw; }
+      .navbar { padding: 12px 6vw; flex-direction: column; }
+      .logo { margin-right: 0; margin-left: 0; margin-top: 8px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-links">
+      <a href="{% url 'student_dashboard' %}" class="nav-btn">חזרה לדשבורד </a>
+      <a href="{% url 'logout' %}" class="logout-btn">התנתקות </a>
+
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="success-check">✔️</div>
+    <div class="confirmation-card">
+      <h1>הבקשה שלך נשלחה<br>בהצלחה!</h1>
+      <p>
+        תודה. הבקשה שלך להארכת מועד נשלחה בהצלחה.<br>
+        ניתן לעקוב אחרי הסטטוס בדף <strong>הבקשות שלי</strong>.
+      </p>
+      <a href="{% url 'student_requests' %}" class="action-btn">לעמוד הבקשות שלי</a>
+    </div>
+  </div>
+</body>
+</html>
