@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>CampusFlow – ניהול בקשות חכם</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+  <div class="top-title">
+    <h1>CampusFlow</h1>
+    <h2>ניהול בקשות קניית חכם</h2>
+  </div>
+
+  <div class="middle-paragraph">
+    <p>פישטנו את תהליך הגשת הבקשות האקדמיות. הצטרפו, שלבו, ושלחו –<br>המערכת תטפל בפעולה עבורכם.</p>
+  </div>
+
+  <div class="bottom-buttons">
+    <a href="{% url 'login' %}" class="btn btn-orange">התחברות</a>
+    <a href="{% url 'register' %}" class="btn btn-green">הרשמה</a>
+  </div>
+
+</body>
+</html>

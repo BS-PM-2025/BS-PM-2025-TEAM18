@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>רשימת משתמשים - CampusFlow</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-links a, .nav-links button {
+      background-color: #6b7280;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .nav-links button:hover {
+      background-color: #4b5563;
+    }
+
+    .container {
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffeecb;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      border-collapse: collapse;
+      background-color: #1e293b;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #374151;
+      color: #facc15;
+    }
+
+    tr:nth-child(even) {
+      background-color: #2d3748;
+    }
+
+    tr:hover {
+      background-color: #4b5563;
+    }
+
+    .block-btn {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .block-btn:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>רשימת משתמשים</h1>
+    <div class="nav-links">
+      <a href="{% url 'admin_dashboard' %}">חזרה לדשבורד</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>רשימת משתמשים במערכת</h2>
+
+    <table>
+      <tr>
+        <th>שם משתמש</th>
+        <th>אימייל</th>
+        <th>תפקיד</th>
+        <th>סטטוס</th>
+        <th>פעולה</th>
+      </tr>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>{{ u.is_blocked|yesno:"חסום,פעיל" }}</td>
+        <td>
+          {% if u != request.user %}
+          <form method="post" action="{% url 'toggle_block' u.id %}">
+            {% csrf_token %}
+            <button class="block-btn" type="submit">
+              {% if u.is_blocked %}שחרר{% else %}חסום{% endif %}
+            </button>
+          </form>
+          {% else %}
+          -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>עדכון סטטוס בקשה - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: #1f2937;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 500px;
+      text-align: right;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #f5deb3;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 20px;
+      background-color: #374151;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #10b981;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>עדכון סטטוס בקשה</h1>
+</div>
+
+<div class="container">
+  <h2>בחר סטטוס חדש</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="status">סטטוס חדש:</label>
+    <select name="status" id="status" required>
+      <option value="נשלחה">נשלחה</option>
+      <option value="בטיפול">בטיפול</option>
+      <option value="אושרה">אושרה</option>
+      <option value="נדחתה">נדחתה</option>
+    </select>
+
+    <button type="submit">עדכן סטטוס</button>
+  </form>
+</div>
+
+</body>
+</html>

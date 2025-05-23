@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>עדכון פרטי משתמש - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3; /* בז' */
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .nav-links a {
+      background-color: #6b7280;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: bold;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+
+    .nav-links a:hover {
+      background-color: #4b5563;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background-color: #1e293b;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: right;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffeecb; /* זהב בהיר */
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #f3f4f6;
+      font-size: 1em;
+      color: #111827;
+    }
+
+    form button {
+      width: 100%;
+      padding: 14px;
+      background-color: #10b981; /* ירוק טורקיזי */
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #059669;
+    }
+
+    .messages {
+      text-align: center;
+      color: #ffbaba;
+      font-size: 0.95em;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>עדכון פרטי משתמש</h1>
+    <div class="nav-links">
+      <a href="{% url 'student_dashboard' %}">← חזרה לדשבורד</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>עריכת פרטים אישיים</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="שם משתמש" value="{{ user.username }}" required>
+      <input type="email" name="email" placeholder="אימייל" value="{{ user.email }}" required>
+      <input type="text" name="phone" placeholder="טלפון (אופציונלי)" value="{{ user.phone }}">
+      <button type="submit">שמור שינויים</button>
+    </form>
+
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>
