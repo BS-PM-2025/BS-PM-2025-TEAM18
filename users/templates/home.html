@@ -1,26 +1,138 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>CampusFlow – ניהול בקשות חכם</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    /* סגנונות כלליים */
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      direction: rtl;
+    }
+
+    /* מיכל ראשי מחלק את המסך לשני חצאים */
+    .container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* צד תמונה */
+    .image-side {
+      flex: 1;
+      background-image: url("{% static 'images/bg_home.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* צד טקסט */
+    .text-side {
+      flex: 1;
+      background-color: #2e1f43; /* צבע רקע דומה לתמונה */
+      color: #f5e3b3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    /* כותרת ראשית */
+    .text-side h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    /* כותרת משנית */
+    .text-side h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* פסקה */
+    .text-side p {
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      max-width: 500px;
+      line-height: 1.4;
+    }
+
+    /* כפתורים */
+    .text-side .btn {
+      display: inline-block;
+      padding: 15px 40px;
+      margin: 0 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-orange {
+      background-color: #ff7f27;
+    }
+
+    .btn-orange:hover {
+      background-color: #e76e10;
+    }
+
+    .btn-green {
+      background-color: #3d863d;
+    }
+
+    .btn-green:hover {
+      background-color: #2e5d2e;
+    }
+
+    /* רספונסיביות לטלפונים */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .image-side, .text-side {
+        flex: unset;
+        height: 50vh;
+        width: 100vw;
+      }
+
+      .text-side .btn {
+        margin: 10px 5px;
+        width: 80%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <div class="top-title">
-    <h1>CampusFlow</h1>
-    <h2>ניהול בקשות קניית חכם</h2>
-  </div>
-
-  <div class="middle-paragraph">
-    <p>פישטנו את תהליך הגשת הבקשות האקדמיות. הצטרפו, שלבו, ושלחו –<br>המערכת תטפל בפעולה עבורכם.</p>
-  </div>
-
-  <div class="bottom-buttons">
-    <a href="{% url 'login' %}" class="btn btn-orange">התחברות</a>
-    <a href="{% url 'register' %}" class="btn btn-green">הרשמה</a>
+  <div class="container">
+    <div class="image-side"></div>
+   <div class="text-side">
+  <h1>CampusFlow</h1>
+  <h2>ניהול בקשות אקדמיות, מעקב סטטוס <br>ועזרה צ'אטית – הכל במקום אחד</h2>
+      <div>
+        <a href="{% url 'login' %}" class="btn btn-orange">התחברות</a>
+        <a href="{% url 'register' %}" class="btn btn-green">הרשמה</a>
+      </div>
+    </div>
   </div>
 
 </body>
+
 </html>
