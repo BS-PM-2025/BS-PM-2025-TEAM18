@@ -1,123 +1,425 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>דירוגי סטודנטים - CampusFlow</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
   <style>
-    body {
+    :root {
+      --bg: #111827;
+      --surface: #1f2937;
+      --accent: #ef4444;
+      --accent-dark: #dc2626;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --highlight: #10b981; /* ירוק */
+      --star: #fbbf24; /* צהוב */
+      --radius: 10px;
+      --gap: 16px;
+      --ff: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background-color: #111827;
-      color: #f3f4f6;
-      display: flex;
-      flex-direction: column;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--ff);
+      padding: 40px;
       min-height: 100vh;
     }
 
-    .navbar {
-      background-color: #1f2937;
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      margin-bottom: var(--gap);
+      gap: 15px;
     }
 
-    .navbar h1 {
-      color: #f5deb3;
-      font-size: 1.5em;
-      margin: 0;
+    header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--text-primary);
     }
 
-    .nav-links a {
-      background-color: #6b7280;
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    nav button {
+      background-color: var(--accent);
+      border: none;
       color: white;
       padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 0.95em;
+      border-radius: var(--radius);
       font-weight: bold;
-      text-decoration: none;
-      margin-left: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .nav-links a:hover {
-      background-color: #4b5563;
+    nav button:hover {
+      background-color: var(--accent-dark);
     }
 
-    .container {
-      flex: 1;
-      padding: 40px;
+    .summary-cards {
+      display: flex;
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 30px;
       text-align: center;
+      flex: 1;
+      max-width: 220px;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5em;
+    }
+
+    .card p {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--highlight);
+    }
+
+    .filters {
+      display: flex;
+      gap: var(--gap);
+      margin: 0 auto 30px auto;
+      max-width: 900px;
+      justify-content: center;
+    }
+
+    .filters select,
+    .filters input[type="date"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .filters button {
+      background-color: var(--highlight);
+      border: none;
+      color: black;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .filters button:hover {
+      background-color: #059669;
+    }
+
+    .table-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
 
     table {
       width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
       border-collapse: collapse;
-      background-color: #1f2937;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 20px;
     }
 
-    th, td {
-      padding: 15px;
-      border-bottom: 1px solid #374151;
-      text-align: center;
+    th,
+    td {
+      padding: 15px 10px;
+      text-align: right;
+      color: var(--text-primary);
     }
 
     th {
-      background-color: #1f2937;
-      color: #f3f4f6;
-      font-size: 1.1em;
+      background-color: var(--accent);
+      font-weight: normal;
+      font-size: 1.1rem;
     }
 
-    .average-rating {
-      font-size: 1.5em;
-      color: #ffeecb;
-      margin-bottom: 20px;
+    tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .stars {
+      color: var(--star);
+      font-size: 1.2rem;
+      white-space: nowrap;
+    }
+
+    .comment {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .actions button {
+      background: transparent;
+      border: 1px solid var(--highlight);
+      color: var(--highlight);
+      padding: 7px 15px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .actions button:hover {
+      background-color: var(--highlight);
+      color: black;
+    }
+
+    /* Modal כללי */
+    .modal {
+      display: none; /* מוסתר ברירת מחדל */
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* תוכן המודל */
+    .modal-content {
+      background-color: #19243d;
+      padding: 40px 50px;
+      border-radius: 15px;
+      max-width: 450px;
+      margin: auto;
+      color: white;
+      box-shadow: 0 0 20px #000;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      font-weight: bold;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+    }
+
+    .modal-content .stars {
+      color: #fbbf24; /* צהוב */
+      font-size: 2rem;
+      margin: 15px 0 25px 0;
+      white-space: nowrap;
+    }
+
+    .close {
+      color: white;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #fbbf24;
+    }
+
+    /* רספונסיביות */
+    @media (max-width: 600px) {
+      .summary-cards {
+        flex-direction: column;
+        max-width: 300px;
+      }
+      .filters {
+        flex-direction: column;
+        max-width: 300px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <header>
+    <h1>דירוגי סטודנטים</h1>
+    <nav>
+      <button onclick="window.location.href='/admin_dashboard'">חזרה לדשבורד</button>
+    </nav>
+  </header>
 
-<div class="navbar">
-  <h1>דירוגי סטודנטים</h1>
-  <div class="nav-links">
-    <a href="{% url 'admin_dashboard' %}">חזרה לדשבורד</a>
-    <a href="{% url 'logout' %}">התנתקות</a>
+  <section class="summary-cards">
+    <div class="card">
+      <h2>ממוצע דירוג</h2>
+      <p>3.2 ★</p>
+    </div>
+    <div class="card">
+      <h2>סה"כ משובים</h2>
+      <p>128</p>
+    </div>
+    <div class="card">
+      <h2>אחוז תגובות</h2>
+      <p>92%</p>
+    </div>
+  </section>
+
+  <section class="filters">
+    <select id="ratingFilter">
+      <option value="">כל הדירוגים</option>
+      <option value="1">★☆☆☆☆</option>
+      <option value="2">★★☆☆☆</option>
+      <option value="3">★★★☆☆</option>
+      <option value="4">★★★★☆</option>
+      <option value="5">★★★★★</option>
+    </select>
+
+    <input type="date" id="dateFilter" />
+    <button id="applyFiltersBtn">החל</button>
+  </section>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>סטודנט</th>
+          <th>דירוג</th>
+          <th>תגובה</th>
+          <th>תאריך</th>
+          <th>פעולות</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rating in ratings %}
+        <tr>
+          <td>{{ rating.student.get_full_name }}</td>
+          <td class="stars">
+            {% for i in "12345" %}
+            {% if forloop.counter <= rating.rating %}
+            ★
+            {% else %}
+            ☆
+            {% endif %}
+            {% endfor %}
+          </td>
+          <td class="comment">{{ rating.comment }}</td>
+          <td>{{ rating.created_at|date:"d/m/Y" }}</td>
+          <td class="actions"><button>צפה</button></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="text-align:center;">לא נמצאו דירוגים.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-</div>
 
-<div class="container">
-  <h2>משוב משתמשים</h2>
+  <!-- Modal לצפייה בפרטים -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Review Details</h2>
+      <p><strong>Student:</strong> <span id="modalStudent"></span></p>
+      <p class="stars" id="modalRating"></p>
+      <p id="modalComment"></p>
+      <p><strong>Date:</strong> <span id="modalDate"></span></p>
+    </div>
+  </div>
 
+  <script>
+    // פונקציית עזר להמרת תאריך ל dd/mm/yyyy
+    function formatDateToDMY(dateStr) {
+      const date = new Date(dateStr);
+      if (isNaN(date)) return null;
+      const d = String(date.getDate()).padStart(2, "0");
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const y = date.getFullYear();
+      return `${d}/${m}/${y}`;
+    }
 
-  <table>
-    <thead>
-      <tr>
-        <th>דירוג</th>
-        <th>הערה</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for rating in ratings %}
-      <tr>
-        <td>{{ rating.rating }}</td>
-        <td>{{ rating.comment|default:"-" }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="3">אין עדיין דירוגים להצגה.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    // סינון טבלה לפי דירוג ותאריך
+    document.getElementById("applyFiltersBtn").addEventListener("click", () => {
+      const ratingFilter = document.getElementById("ratingFilter").value;
+      const dateFilter = document.getElementById("dateFilter").value; // פורמט yyyy-mm-dd
+      const formattedDateFilter = formatDateToDMY(dateFilter);
 
+      const rows = document.querySelectorAll("tbody tr");
+
+      rows.forEach((row) => {
+        const ratingStars = row.querySelector(".stars").textContent.trim();
+        const ratingCount = (ratingStars.match(/★/g) || []).length;
+
+        const rowDate = row.children[3].textContent.trim();
+
+        const ratingMatch = ratingFilter === "" || ratingCount == ratingFilter;
+        const dateMatch = !formattedDateFilter || rowDate === formattedDateFilter;
+
+        if (ratingMatch && dateMatch) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+    // מודאל - פתיחה וסגירה
+    const modal = document.getElementById("reviewModal");
+    const closeModal = document.getElementById("closeModal");
+
+    function renderStars(rating) {
+      let stars = "";
+      for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? "★" : "☆";
+      }
+      return stars;
+    }
+
+    closeModal.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    const buttons = document.querySelectorAll(".actions button");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("tr");
+        const student = row.querySelector("td:first-child").textContent.trim();
+        const ratingText = row.querySelector(".stars").textContent.trim();
+        const rating = (ratingText.match(/★/g) || []).length;
+        const comment = row.querySelector(".comment").textContent.trim();
+        const date = row.children[3].textContent.trim();
+
+        document.getElementById("modalStudent").textContent = student;
+        document.getElementById("modalRating").textContent = renderStars(rating);
+        document.getElementById("modalComment").textContent = `"${comment}"`;
+        document.getElementById("modalDate").textContent = date;
+
+        modal.style.display = "flex";
+      });
+    });
+  </script>
 </body>
 </html>
