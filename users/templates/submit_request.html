@@ -1,164 +1,364 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <title>הגשת בקשה - CampusFlow</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <meta charset="UTF-8" />
+  <title>הגשת בקשה - טופס רב שלבי</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, sans-serif;
       background-color: #111827;
-      color: #f3f4f6;
+      color: #222;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      align-items: center;
+      padding: 24px 0;
     }
-
-    .navbar {
+    nav {
       background-color: #1f2937;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      box-sizing: border-box;
+    }
+    nav a {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #dc2626;
+    }
+    .container {
+      background: #fff;
+      color: #222;
+      padding: 22px 20px;
+      border-radius: 10px;
+      margin-top: 35px;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.11);
+      min-width: 290px;
+      max-width: 370px;
+      width: 100%;
+      text-align: right;
+      direction: rtl;
+    }
+    .stepper {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
+      margin-bottom: 18px;
+      max-width: 340px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    .navbar h1 {
-      color: #f5deb3;
-      font-size: 1.4em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 10px;
-    }
-
-    .nav-links a {
-      background-color: #ef4444;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+    .step {
       text-align: center;
-      width: 140px;
-    }
-
-    .nav-links a:hover {
-      background-color: #dc2626;
-    }
-
-    .container {
       flex: 1;
+      position: relative;
+      color: #bbb;
+      font-weight: bold;
+    }
+    .circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f5f7fa;
+      border: 2px solid #d1d5db;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      line-height: 22px;
+      font-size: 14px;
+      color: #bbb;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px;
-      text-align: center;
     }
-
-    .form-container {
-      width: 100%;
-      max-width: 500px;
-      background-color: #1f2937;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    .step.completed .circle,
+    .step.active .circle {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: #fff;
     }
-
-    .form-container label {
-      display: block;
-      margin-top: 15px;
-      text-align: right;
+    .step.active .circle {
+      border-color: #22c55e;
+      color: #22c55e;
     }
-
-    .form-container input,
-    .form-container textarea,
-    .form-container select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    .form-container button {
-      margin-top: 20px;
-      background-color: #10b981;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
+    .label {
+      margin-top: 4px;
+      font-size: 0.94rem;
+      color: #3b82f6;
       font-weight: bold;
-      cursor: pointer;
+      transition: opacity 0.3s;
+      display: none;
+    }
+    .label.active-label {
+      display: block;
+    }
+    h2 {
+      margin-bottom: 15px;
+      color: #2563eb;
+      text-align: center;
+      font-size: 1.25em;
+    }
+    h3 {
+      margin-bottom: 10px;
+      color: #3b82f6;
+      font-size: 1.1em;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #222;
+    }
+    input[type="text"], textarea, select {
       width: 100%;
-    }
-
-    .form-container button:hover {
-      background-color: #059669;
-    }
-
-    /* ✅ הודעות */
-    .message-success {
-      background-color: #10b981;
-      color: white;
       padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      background-color: #f5f7fa;
+      color: #222;
+      box-sizing: border-box;
+      resize: vertical;
+      direction: rtl;
     }
-
-    .message-error {
-      background-color: #ef4444;
-      color: white;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 10px;
+    textarea { min-height: 70px; }
+    input[type="file"] {
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: #222;
+      direction: ltr;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    button, .button {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 11px 0;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.18s;
+      flex: 1;
+      text-align: center;
+      margin: 0;
+    }
+    button.secondary, .button.secondary {
+      background: #b0b4bb;
+      color: #222;
+    }
+    button:hover, .button:hover { background: #2563eb; }
+    button.secondary:hover, .button.secondary:hover { background: #d1d5db; }
+    .messages {
+      margin-bottom: 15px;
+      padding: 10px 0;
+      text-align: center;
+      color: #e11d48;
+      font-weight: bold;
+    }
+    .summary-row {
+      margin-bottom: 10px;
+      font-size: 1.03em;
+    }
+    .summary-row span {
+      color: #3b82f6;
+    }
+    .form-step {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .form-step.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-<div class="navbar">
-  <h1>הגשת בקשה</h1>
-  <div class="nav-links">
-    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
-    <a href="{% url 'logout' %}">התנתקות</a>
-  </div>
-</div>
+<nav>
+  <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+  <a href="{% url 'logout' %}">התנתקות</a>
+</nav>
 
 <div class="container">
-  <div class="form-container">
-    <h2>הגש בקשה חדשה</h2>
-
-    {% if messages %}
-      {% for message in messages %}
-        <div class="{% if message.tags == 'success' %}message-success{% else %}message-error{% endif %}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-
-    <form method="post">
-      {% csrf_token %}
-      
-      <label for="id_title">נושא הבקשה:</label>
-      {{ form.title }}
-      
-      <label for="id_description">תיאור הבקשה:</label>
-      {{ form.description }}
-      
-      <label for="id_request_type">סוג הבקשה:</label>
-      {{ form.request_type }}
-      
-      <button type="submit">שלח בקשה</button>
-    </form>
+  <!-- Stepper קומפקטי -->
+  <div class="stepper">
+    <div class="step" id="stepper-1">
+      <div class="circle">1</div>
+      <div class="label" id="step-label-1">סוג בקשה</div>
+    </div>
+    <div class="step" id="stepper-2">
+      <div class="circle">2</div>
+      <div class="label" id="step-label-2">פרטים</div>
+    </div>
+    <div class="step" id="stepper-3">
+      <div class="circle">3</div>
+      <div class="label" id="step-label-3">סיכום</div>
+    </div>
   </div>
+
+  <h2>הגשת בקשה - שלב <span id="currentStepNum">1</span> מתוך 3</h2>
+  <form id="multiStepForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- שלב 1 -->
+    <div class="form-step active" data-step="1">
+      <label for="requestType">בחר סוג בקשה *</label>
+      <select id="requestType" name="request_type" required>
+        <option value="" disabled selected>בחר סוג בקשה</option>
+        <option value="extension">הארכת מועד</option>
+        <option value="appeal">ערעור ציון</option>
+        <option value="medical">אישור רפואי</option>
+      </select>
+      {% if form.request_type.errors %}
+        <div style="color: red; margin-bottom: 15px;">
+          {{ form.request_type.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- שלב 2 -->
+    <div class="form-step" data-step="2">
+      <label for="course">בחר קורס *</label>
+      <select id="course" name="course" required>
+        <option value="" disabled selected>בחר קורס</option>
+        <option value="CS101">CS101</option>
+        <option value="CS102">CS102</option>
+        <option value="Math201">Math201</option>
+      </select>
+
+      <label for="subject">נושא הבקשה *</label>
+      <input type="text" id="subject" name="subject" required>
+
+      <label for="reason">סיבת הבקשה</label>
+      <textarea id="reason" name="reason" placeholder="הסבר מפורט (לא חובה)"></textarea>
+
+      <label for="attachment">צרף קובץ</label>
+      <input type="file" id="attachment" name="attachment" accept=".pdf,.jpg,.png">
+    </div>
+
+    <!-- שלב 3 -->
+    <div class="form-step" data-step="3">
+      <h3>סיכום הבקשה שלך:</h3>
+      <div class="summary-row"><strong>סוג הבקשה:</strong> <span id="summaryRequestType"></span></div>
+      <div class="summary-row"><strong>קורס:</strong> <span id="summaryCourse"></span></div>
+      <div class="summary-row"><strong>נושא:</strong> <span id="summarySubject"></span></div>
+      <div class="summary-row"><strong>סיבה:</strong> <span id="summaryReason"></span></div>
+      <div class="summary-row"><strong>קובץ מצורף:</strong> <span id="summaryAttachment"></span></div>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" id="prevBtn" disabled>חזור</button>
+      <button type="button" id="nextBtn">הבא</button>
+    </div>
+  </form>
 </div>
+
+<script>
+  // JS למעבר בין שלבים, עדכון Stepper ו-label רק לשלב הנוכחי
+  const form = document.getElementById('multiStepForm');
+  const steps = document.querySelectorAll('.form-step');
+  const stepperSteps = [
+    document.getElementById('stepper-1'),
+    document.getElementById('stepper-2'),
+    document.getElementById('stepper-3')
+  ];
+  const stepLabels = [
+    document.getElementById('step-label-1'),
+    document.getElementById('step-label-2'),
+    document.getElementById('step-label-3')
+  ];
+  const currentStepNum = document.getElementById('currentStepNum');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  let currentStep = 0;
+
+  function updateStepper(step) {
+    stepperSteps.forEach((el, idx) => {
+      el.classList.remove('active', 'completed');
+      if (idx < step) el.classList.add('completed');
+      else if (idx === step) el.classList.add('active');
+    });
+    // Hide all labels
+    stepLabels.forEach(l => l.classList.remove('active-label'));
+    // Show label only for the current step
+    stepLabels[step].classList.add('active-label');
+  }
+
+  function showStep(step) {
+    steps.forEach((el, idx) => {
+      el.classList.toggle('active', idx === step);
+    });
+    updateStepper(step);
+    currentStepNum.textContent = step + 1;
+
+    prevBtn.disabled = step === 0;
+    nextBtn.textContent = step === steps.length - 1 ? 'שלח בקשה' : 'הבא';
+
+    if (step === steps.length - 1) {
+      updateSummary();
+    }
+  }
+
+  function updateSummary() {
+    document.getElementById('summaryRequestType').textContent = document.getElementById('requestType').selectedOptions[0]?.text || '';
+    document.getElementById('summaryCourse').textContent = document.getElementById('course').selectedOptions[0]?.text || '';
+    document.getElementById('summarySubject').textContent = document.getElementById('subject').value;
+    document.getElementById('summaryReason').textContent = document.getElementById('reason').value;
+    const fileInput = document.getElementById('attachment');
+    document.getElementById('summaryAttachment').textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'אין קובץ מצורף';
+  }
+
+  nextBtn.addEventListener('click', () => {
+    // Validate current step inputs
+    const inputs = steps[currentStep].querySelectorAll('input, select, textarea');
+    for (const input of inputs) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+    }
+
+    if (currentStep === steps.length - 1) {
+      form.submit();
+      return;
+    }
+
+    currentStep++;
+    showStep(currentStep);
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentStep === 0) return;
+    currentStep--;
+    showStep(currentStep);
+  });
+
+  // Start
+  showStep(currentStep);
+</script>
 
 </body>
 </html>
