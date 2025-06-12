@@ -1,112 +1,217 @@
 body {
   margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
-  background-image: url("../images/bg_home.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  overflow: hidden;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  position: relative;
-}
-
-/* ✅ כותרת למעלה */
-.top-title {
-  position: absolute;
-  top: 10px;
-  width: 100%;
-  text-align: center;
-  color: #e3caa5; /* בז’ זהוב בהיר */
-}
-
-.top-title h1 {
-  font-size: 2.8em;
-  margin-bottom: 0.2em;
-  color: #f5deb3; /* חום בהיר – wheat */
-}
-
-.top-title h2 {
-  font-size: 1.6em;
-  font-weight: bold;
-  color: #deb887; /* burlywood */
-}
-
-/* ✅ פסקה באמצע */
-.middle-paragraph {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #f4e1c1; /* בז’ קרמי עדין */
-  font-size: 1.1em;
-  font-weight: bold;
-  line-height: 1.6;
-}
-
-/* ✅ כפתורים בתחתית */
-.bottom-buttons {
-  position: absolute;
-  bottom: 30px;
-  width: 100%;
+  background-color: #111827;
+  color: #222;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
 }
 
-.btn {
-  padding: 16px 36px;
-  border-radius: 12px;
-  font-size: 1.2em;
-  font-weight: bold;
-  text-decoration: none;
-  color: white;
-}
-
-.btn-orange { background-color: #f57c00; }
-.btn-orange:hover { background-color: #e65100; }
-
-.btn-green { background-color: #388e3c; }
-.btn-green:hover { background-color: #2e7d32; }
-
-/* ✅ 🔔 סגנון פעמון התראות */
-.notification-bell {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  margin-left: 20px;
-}
-
-/* ✅ עיצוב dropdown שנפתח */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 40px;
+nav {
   background-color: #1f2937;
-  min-width: 220px;
-  max-height: 300px;
-  overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-  z-index: 1;
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  box-sizing: border-box;
+}
+
+nav a {
+  background-color: #ef4444;
+  color: white;
+  padding: 10px 20px;
   border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.dropdown-content div {
-  color: #f3f4f6;
-  padding: 12px 16px;
+nav a:hover {
+  background-color: #dc2626;
+}
+
+.container {
+  background: #fff;
+  color: #222;
+  padding: 22px 20px;
+  border-radius: 10px;
+  margin-top: 35px;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.11);
+  min-width: 290px;
+  max-width: 370px;
+  width: 100%;
   text-align: right;
-  border-bottom: 1px solid #374151;
+  direction: rtl;
 }
 
-.dropdown-content div:hover {
-  background-color: #374151;
+/* ----- Stepper עיגולים בלבד ----- */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  direction: ltr;
+}
+/* אין בכלל ::before = אין פס בין המספרים! */
+
+.step {
+  text-align: center;
+  flex: 1;
+  position: relative;
+  color: #bbb;
+  font-weight: bold;
+  background: none;
+  z-index: 1;
+}
+.step .circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f5f7fa;
+  border: 2px solid #d1d5db;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  line-height: 22px;
+  font-size: 14px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-clip: padding-box;
+}
+.step.completed .circle,
+.step.active .circle {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #fff;
+}
+.step.active .circle {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+.label {
+  margin-top: 4px;
+  font-size: 0.94rem;
+  color: #3b82f6;
+  font-weight: bold;
+  transition: opacity 0.3s;
+  display: none;
+}
+.label.active-label {
+  display: block;
 }
 
-/* ✅ טיפה יותר מקום ל icon של פעמון */
-.notification-bell img {
-  width: 28px;
-  height: 28px;
+/* כותרות */
+h2 {
+  margin-bottom: 15px;
+  color: #2563eb;
+  text-align: center;
+  font-size: 1.25em;
+}
+h3 {
+  margin-bottom: 10px;
+  color: #3b82f6;
+  font-size: 1.1em;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #222;
+}
+
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  background-color: #f5f7fa;
+  color: #222;
+  box-sizing: border-box;
+  resize: vertical;
+  direction: rtl;
+}
+
+textarea {
+  min-height: 70px;
+}
+
+input[type="file"] {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: #222;
+  direction: ltr;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+button, .button {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 11px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+button.secondary, .button.secondary {
+  background: #b0b4bb;
+  color: #222;
+}
+
+button:hover, .button:hover { background: #2563eb; }
+button.secondary:hover, .button.secondary:hover { background: #d1d5db; }
+
+.messages {
+  margin-bottom: 15px;
+  padding: 10px 0;
+  text-align: center;
+  color: #e11d48;
+  font-weight: bold;
+}
+
+.summary-row {
+  margin-bottom: 10px;
+  font-size: 1.03em;
+}
+
+.summary-row span {
+  color: #3b82f6;
+}
+
+.form-step {
+  display: none;
+  animation: fadeIn 0.4s ease forwards;
+}
+.form-step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
