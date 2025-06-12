@@ -33,8 +33,15 @@ urlpatterns = [
 
     # 📚 בקשות סטודנט
     path('student_dashboard/submit_request/', views.submit_request, name='submit_request'),
+    path('student_dashboard/request_confirmation/', views.request_confirmation, name='request_confirmation'),
+
     path('student_dashboard/requests/', views.student_requests, name='student_requests'),
     path('student_dashboard/history/', views.student_history, name='student_history'),
+        path('student_dashboard/sample_requests/', views.sample_requests, name='sample_requests'),
+            path('student_dashboard/edit_request/<int:request_id>/', views.edit_request, name='edit_request'),
+path('student_dashboard/edit_request_confirmation/', views.edit_request_confirmation, name='edit_request_confirmation'),
+
+
 
     # 🔔 התראות סטודנט (פעמון)
     path('student_dashboard/notifications/', views.notifications_api, name='notifications_api'),
@@ -62,5 +69,31 @@ path('admin_dashboard/manage_bugs/', views.manage_bugs, name='manage_bugs'),
 # users/urls.py או איפה שיש לך
 path('lecturer_dashboard/change_password/',views.lecturer_change_password, name='lecturer_change_password'),
 
+# users/urls.py
+path('notification/read/<int:pk>/', views.mark_notification_read, name='mark_notification_read'),
+
+ path('manage_requests/', views.requests_admin_list, name='manage_requests'),
+path('request/update_status/<int:request_id>/', views.update_request_status, name='update_request_status'),
+
+    path('requests_admin_list/', views.requests_admin_list, name='requests_admin_list'),
+    path('request_reports/', views.request_reports, name='request_reports'),
+
+    path('request_summary/', views.request_summary, name='request_summary'),
+
+path('request_patterns/', views.request_patterns, name='request_patterns'),
+
+    path('remind_grade_appeals/', views.remind_grade_appeals, name='remind_grade_appeals'),
+
+    path('lecturer/mark_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
+
+    path('lecturer/requests/', views.lecturer_requests_view, name='lecturer_requests'),
+    path('lecturer/update_status/<int:request_id>/', views.update_request_status_by_lecturer, name='update_request_status_by_lecturer'),
+    path('requests/update/<int:request_id>/', views.update_request_status_by_lecturer, name='update_request_status_by_lecturer'),
+path('lecturer/profile/', views.lecturer_profile, name='lecturer_profile')
+
 
 ]
+
+
+
+
