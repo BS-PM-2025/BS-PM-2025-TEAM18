@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>רשימת משתמשים - CampusFlow</title>
   <style>
     body {
@@ -41,6 +41,23 @@
       font-weight: bold;
       text-decoration: none;
       cursor: pointer;
+      transition: background 0.22s;
+    }
+
+    .nav-links a.btn-red {
+      background-color: #ef4444;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.22s;
+    }
+    .nav-links a.btn-red:hover {
+      background-color: #dc2626;
     }
 
     .nav-links a:hover, .nav-links button:hover {
@@ -73,9 +90,11 @@
       text-align: center;
     }
 
+    /* כותרות אפורות */
     th {
       background-color: #374151;
-      color: #facc15;
+      color: #9ca3af;
+      font-weight: bold;
     }
 
     tr:nth-child(even) {
@@ -94,10 +113,21 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
     }
 
     .block-btn:hover {
       background-color: #dc2626;
+    }
+
+    /* צבע ירוק למילה "פעיל" */
+    td.status-active {
+      color: #10b981;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -106,7 +136,7 @@
   <div class="navbar">
     <h1>רשימת משתמשים</h1>
     <div class="nav-links">
-      <a href="{% url 'admin_dashboard' %}">חזרה לדשבורד</a>
+      <a href="{% url 'admin_dashboard' %}" class="btn-red">חזרה לדשבורד</a>
     </div>
   </div>
 
@@ -126,7 +156,9 @@
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
         <td>{{ u.role }}</td>
-        <td>{{ u.is_blocked|yesno:"חסום,פעיל" }}</td>
+        <td class="{% if not u.is_blocked %}status-active{% endif %}">
+          {{ u.is_blocked|yesno:"חסום,פעיל" }}
+        </td>
         <td>
           {% if u != request.user %}
           <form method="post" action="{% url 'toggle_block' u.id %}">
