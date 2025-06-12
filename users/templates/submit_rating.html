@@ -61,6 +61,7 @@
       justify-content: center;
       padding: 40px;
       text-align: center;
+      width: 100%;
     }
 
     h2 {
@@ -111,14 +112,18 @@
       background-color: #059669;
     }
 
-    /* ✅ עיצוב להודעות */
-    .message-success {
+    .full-width-success {
       background-color: #10b981;
       color: white;
-      padding: 10px;
-      margin-bottom: 20px;
+      padding: 15px;
       border-radius: 10px;
+      margin-bottom: 25px;
+      font-size: 1.2em;
+      font-weight: bold;
+      width: 100%;
+      text-align: center;
     }
+
     .message-error {
       background-color: #ef4444;
       color: white;
@@ -142,20 +147,26 @@
 </div>
 
 <div class="container">
+  <h2>דרג את השירות</h2>
+
+  {% if success_message %}
+    <div class="full-width-success">
+      {{ success_message }}
+    </div>
+  {% endif %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="{% if message.tags == 'error' %}message-error{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <div class="form-container">
-    <h2>דרג את השירות</h2>
-
-    {% if messages %}
-      {% for message in messages %}
-        <div class="{% if message.tags == 'success' %}message-success{% else %}message-error{% endif %}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-
     <form method="post">
       {% csrf_token %}
-      
+
       <label for="rating">בחר דירוג (1–5):</label>
       <select name="rating" required>
         <option value="">בחר דירוג</option>
