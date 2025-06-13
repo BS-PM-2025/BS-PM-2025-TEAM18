@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דפוסים חוזרים של בקשות</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      background-color: #111827;
+      color: #f3f4f6;
+      font-family: Tahoma;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #1f2937;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-title {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #facc15;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a, .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #ffe066;
+    }
+
+    table {
+      width: 60%;
+      margin: 30px auto;
+      background-color: #1f2937;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #374151;
+    }
+
+    th {
+      background-color: #374151;
+      color: #facc15;
+    }
+
+    tr:hover {
+      background-color: #232c3d;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-title">📊 דפוסים חוזרים של בקשות</div>
+  <div class="nav-links">
+    <a href="{% url 'secretary_dashboard' %}"> חזרה לדשבורד</a>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container">
+
+  <h3>נושאים שחוזרים על עצמם</h3>
+  <table>
+    <thead>
+      <tr><th>נושא</th><th>מספר בקשות</th></tr>
+    </thead>
+    <tbody>
+      {% if repeated_subjects %}
+        {% for row in repeated_subjects %}
+          <tr><td>{{ row.subject }}</td><td>{{ row.total }}</td></tr>
+        {% endfor %}
+      {% else %}
+        <tr><td colspan="2">אין נושאים שחוזרים על עצמם.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <h3>סוגי בקשות נפוצים</h3>
+  <table>
+    <thead>
+      <tr><th>סוג בקשה</th><th>סה"כ</th></tr>
+    </thead>
+    <tbody>
+      {% for row in type_patterns %}
+        <tr><td>{{ row.request_type }}</td><td>{{ row.total }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
