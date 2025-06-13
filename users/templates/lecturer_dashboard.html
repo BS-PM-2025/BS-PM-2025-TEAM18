@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דשבורד מרצה - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links a, .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .nav-links a:hover, .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .bell-icon {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      margin-left: 12px;
+    }
+
+    .notification-bell {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 4px 7px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background: #232c3d;
+      min-width: 280px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      z-index: 99;
+      padding: 10px 0;
+    }
+
+    .notification-dropdown.open {
+      display: block;
+    }
+
+    .notification-dropdown .notification-item {
+      padding: 13px 20px;
+      border-bottom: 1px solid #313c51;
+      color: #f3f4f6;
+      text-align: right;
+      cursor: pointer;
+    }
+
+    .notification-dropdown .notification-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-dropdown .notification-item.unread {
+      background: #374151;
+      font-weight: bold;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #ffeecb;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>דשבורד מרצה</h1>
+  <div class="nav-links">
+    <div class="notification-bell" id="bellBtn">
+      <img src="{% static 'images/bell.png' %}" alt="🔔" class="bell-icon" />
+      {% if unread_count > 0 %}
+        <span class="badge">{{ unread_count }}</span>
+      {% endif %}
+      <div id="notificationDropdown" class="notification-dropdown">
+        {% if notifications %}
+          {% for note in notifications %}
+            <div class="notification-item {% if not note.is_read %}unread{% endif %}">
+              {{ note.message }}
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="notification-item">אין התראות חדשות</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <a href="{% url 'lecturer_change_password' %}">שינוי סיסמה</a>
+    <a href="{% url 'lecturer_requests' %}">📄 צפייה בבקשות ערעור ציון</a>
+    <a href="{% url 'lecturer_profile' %}">החשבון שלי</a>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <h2>ברוך הבא לדשבורד המרצה</h2>
+  <p>כאן תוכל לעיין בבקשות, לעדכן סטטוסים ולספק משוב לסטודנטים.</p>
+</div>
+
+<script>
+  const bellBtn = document.getElementById('bellBtn');
+  const dropdown = document.getElementById('notificationDropdown');
+
+  bellBtn.addEventListener('click', () => {
+    dropdown.classList.toggle('open');
+
+    if (dropdown.classList.contains('open')) {
+      fetch("{% url 'mark_notifications_as_read' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const badge = document.querySelector('.badge');
+          if (badge) badge.remove();
+        }
+      });
+    }
+  });
+
+  document.body.addEventListener('click', function(e) {
+    if (!bellBtn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>
