@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>הבקשות שלי - CampusFlow</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #111827;
+      color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.4em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      width: 140px;
+      text-align: center;
+    }
+
+    .nav-links a:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #1f2937;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid #374151;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1f2937;
+      color: #f3f4f6;
+      font-size: 1.1em;
+    }
+
+    .status-sent { color: #facc15; font-weight: bold; }
+    .status-pending { color: #f59e0b; font-weight: bold; }
+    .status-approved { color: #22c55e; font-weight: bold; }
+    .status-rejected { color: #ef4444; font-weight: bold; }
+
+    .edit-btn {
+      background-color: #2563eb;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .edit-btn:hover {
+      background-color: #1e40af;
+    }
+
+    .cannot-edit {
+      color: #ef4444;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .system-note {
+      color: #a5f3fc;
+      font-size: 0.9em;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>הבקשות שלי</h1>
+  <div class="nav-links">
+    <a href="{% url 'student_dashboard' %}">חזרה לדשבורד</a>
+     
+  </div>
+</div>
+
+<div class="container">
+  <h2>הבקשות שהגשת</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>נושא</th>
+        <th>תיאור</th>
+        <th>סוג בקשה</th>
+        <th>סטטוס</th>
+        <th>פעולות</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in requests %}
+      <tr>
+        <td>{{ request.subject }}</td>
+        <td>{{ request.reason|default:"-" }}</td>
+        <td>{{ request.get_request_type_display }}</td>
+        <td class="
+          {% if request.status == 'submitted' %}status-sent
+          {% elif request.status == 'in_progress' %}status-pending
+          {% elif request.status == 'approved' %}status-approved
+          {% elif request.status == 'rejected' %}status-rejected
+          {% endif %}">
+          {{ request.get_status_display }}
+        </td>
+      
+        <td>
+          {% if request.can_edit %}
+            <a href="{% url 'edit_request' request.id %}" class="edit-btn">ערוך</a>
+          {% else %}
+            <span class="cannot-edit">אי אפשר לערוך</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">לא נמצאו בקשות.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
