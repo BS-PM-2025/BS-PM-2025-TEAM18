@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>דוח לפי סוגי בקשות</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      background-color: #111827;
+      color: #f3f4f6;
+      font-family: Tahoma;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-links a,
+    .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover,
+    .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .container {
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #facc15;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 60%;
+      margin: auto;
+      background-color: #1f2937;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #374151;
+    }
+
+    th {
+      background-color: #374151;
+      color: #facc15;
+    }
+
+    tr:hover {
+      background-color: #232c3d;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 🔹 ניווט עליון -->
+<div class="navbar">
+  <h1>דוח   </h1>
+  <div class="nav-links">
+    <a href="{% url 'secretary_dashboard' %}"> חזרה לדשבורד</a>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit"> התנתקות</button>
+    </form>
+  </div>
+</div>
+
+<!-- 🔸 תוכן מרכזי -->
+<div class="container">
+  <h2>דוח לפי סוגי בקשות</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>סוג בקשה</th>
+        <th>סה"כ בקשות</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in report_data %}
+      <tr>
+        <td>{{ row.type }}</td>
+        <td>{{ row.total }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2">אין בקשות להצגה.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
