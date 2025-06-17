@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>בקשות ערעור ציון</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      background-color: #111827;
+      color: #f3f4f6;
+      font-family: Tahoma;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .navbar h1 {
+      color: #f5deb3;
+      font-size: 1.5em;
+      margin: 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .nav-links a,
+    .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    .nav-links a:hover,
+    .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+    .container {
+      padding: 40px;
+    }
+    .message {
+      background-color: #22c55e;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #facc15;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #1f2937;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #374151;
+    }
+    th {
+      background-color: #374151;
+      color: #facc15;
+    }
+    tr:hover {
+      background-color: #2d3748;
+    }
+    /* העיצוב הזה דופק את כל הטפסים. נתקן למטה */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    /* --- תיקון עיצוב טופס הסינון בלבד --- */
+    .filter-row {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .filter-row label {
+      color: white;
+      margin-left: 2px;
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+    .filter-row .feedback-input {
+      min-width: 120px;
+    }
+    .filter-row button {
+      min-width: 80px;
+      white-space: nowrap;
+    }
+    /* --- שאר הטפסים בטבלה נשארים טוריים --- */
+    .table-action-form {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .feedback-input {
+      padding: 6px;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+      direction: rtl;
+    }
+    .btn-approve, .btn-reject {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+    .btn-approve {
+      background-color: #10b981;
+    }
+    .btn-reject {
+      background-color: #ef4444;
+    }
+    .btn-approve:hover {
+      background-color: #059669;
+    }
+    .btn-reject:hover {
+      background-color: #dc2626;
+    }
+    .tag {
+      background-color: #facc15;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>בקשות</h1>
+  <div class="nav-links">
+    <a href="{% url 'lecturer_dashboard' %}">חזרה לדשבורד</a>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="message">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <h2>בקשות ערעור ציון</h2>
+
+  <!-- טופס סינון חדש: כל הרכיבים בשורה אחת -->
+  <form method="get" class="filter-row">
+    <!-- חיפוש לפי שם סטודנט -->
+    <input type="text" name="student_name" class="feedback-input"
+           placeholder="חפש לפי שם סטודנט"
+           value="{{ student_name|default_if_none:'' }}">
+
+    <select name="status" class="feedback-input">
+      <option value="">כל הסטטוסים</option>
+      <option value="submitted" {% if selected_status == 'submitted' %}selected{% endif %}>ממתינה</option>
+      <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>בטיפול</option>
+      <option value="approved" {% if selected_status == 'approved' %}selected{% endif %}>אושרה</option>
+      <option value="rejected" {% if selected_status == 'rejected' %}selected{% endif %}>נדחתה</option>
+    </select>
+    <label for="start_date">מתאריך:</label>
+    <input type="date" id="start_date" name="start_date" class="feedback-input" value="{{ selected_start }}">
+    <label for="end_date">עד תאריך:</label>
+    <input type="date" id="end_date" name="end_date" class="feedback-input" value="{{ selected_end }}">
+    <button type="submit" class="btn-approve">סנן 🔍</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>סטודנט</th>
+        <th>סוג הבקשה</th>
+        <th>קורס</th>
+        <th>נושא</th>
+        <th>סיבה</th>
+        <th>תאריך</th>
+        <th>סטטוס</th>
+        <th>פעולה</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for req in requests %}
+      <tr>
+        <td>{{ req.student.username }}</td>
+        <td>{{ req.get_request_type_display }}</td>
+        <td>{{ req.course_name }}</td>
+        <td>{{ req.subject }}</td>
+        <td>{{ req.reason }}</td>
+        <td>{{ req.created_at|date:"d/m/Y H:i" }}</td>
+        <td>{{ req.status }}</td>
+        <td>
+          {% if req.status == 'submitted' %}
+          <form method="post" action="{% url 'update_request_status_by_lecturer' req.id %}" class="table-action-form">
+            {% csrf_token %}
+            <input type="text" name="feedback" placeholder="הערה..." class="feedback-input" required>
+            <button name="action" value="approve" class="btn-approve">✔ אשר</button>
+            <button name="action" value="reject" class="btn-reject">✖ דחה</button>
+          </form>
+          {% else %}
+            <span class="tag">עודכן ✅</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8">אין בקשות להצגה</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
