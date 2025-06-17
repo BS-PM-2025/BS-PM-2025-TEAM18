@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>החשבון שלי – עדכון פרטים</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body { background-color: #111827; color: #f3f4f6; font-family: Tahoma; }
+    .navbar {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .navbar-title {
+      color: #f5deb3;
+      font-size: 1.6em;
+      font-weight: bold;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .nav-links a, .nav-links form button {
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      font-size: 1.07em;
+      transition: background 0.2s;
+    }
+    .nav-links a:hover, .nav-links form button:hover {
+      background-color: #dc2626;
+    }
+
+    .container { background: #fff; color: #222; padding: 35px; margin: 40px auto; border-radius: 10px; max-width: 420px; }
+    h2 { color: #2563eb; text-align: center; margin-bottom: 25px; }
+    label { font-weight: bold; color: #1f2937; }
+    .feedback-input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; margin-bottom: 16px; font-size: 1rem; }
+    .btn-save { background: #10b981; color: #fff; border: none; border-radius: 8px; padding: 10px 0; width: 100%; font-size: 1.05em; font-weight: bold; margin-top: 12px; cursor: pointer; }
+    .btn-save:hover { background: #059669; }
+    .message { background: #22c55e; color: #fff; text-align: center; border-radius: 8px; padding: 12px; margin-bottom: 18px; }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-title">פרטים שלי</div>
+  <div class="nav-links">
+    <a href="{% url 'lecturer_dashboard' %}">חזרה לדשבורד</a>
+    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">התנתקות</button>
+    </form>
+  </div>
+</div>
+
+
+  <div class="container">
+    <h2>החשבון שלי – עדכון פרטים</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.first_name.label_tag }}<br>
+      {{ form.first_name }}
+      {{ form.email.label_tag }}<br>
+      {{ form.email }}
+      <button type="submit" class="btn-save">שמור</button>
+    </form>
+  </div>
+</body>
+</html>
