@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>סיכום בקשות</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    body {
+      background-color: #111827;
+      color: #f3f4f6;
+      font-family: Tahoma;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .navbar h2 {
+      color: #facc15;
+      margin: 0;
+      font-size: 1.4em;
+    }
+
+    .nav-actions a {
+      background-color: #ef4444;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 12px;
+    }
+
+    .summary-box {
+      background-color: #1f2937;
+      margin: 60px auto 40px;
+      padding: 30px;
+      border-radius: 12px;
+      width: 60%;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .summary-box h2 {
+      color: #facc15;
+      margin-bottom: 20px;
+    }
+
+    .summary-box p {
+      font-size: 1.1em;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.05em;
+    }
+
+    .btn-pdf {
+      margin-top: 20px;
+      background-color: #3b82f6;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .btn-pdf:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h2>📄 סיכום כללי של בקשות</h2>
+  <div class="nav-actions">
+    <a href="{% url 'secretary_dashboard' %}">חזרה לדשבורד</a>
+    <a href="{% url 'logout' %}">התנתקות</a>
+  </div>
+</div>
+
+<div class="summary-box" id="summary-content">
+  <p>סה"כ בקשות במערכת: {{ total_requests }}</p>
+  <p>סטודנטים ייחודיים שהגישו: {{ unique_students }}</p>
+  <p>בקשה ראשונה נשלחה בתאריך: {{ earliest.created_at|date:"H:i d/m/Y" }}</p>
+  <p>בקשה אחרונה נשלחה בתאריך: {{ latest.created_at|date:"H:i d/m/Y" }}</p>
+  <hr>
+  <h3 style="margin-top:20px;">התפלגות לפי סטטוס:</h3>
+  <ul>
+    {% for item in by_status %}
+      <li>{{ item.status }} – {{ item.count }} בקשות</li>
+    {% endfor %}
+  </ul>
+
+  <a href="#" class="btn-pdf" onclick="generatePDF()">📥 הורד סיכום כ־PDF</a>
+</div>
+
+<!-- PDF Script (jsPDF) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  async function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    let text = document.getElementById("summary-content").innerText;
+    let lines = doc.splitTextToSize(text, 180);
+    doc.text(lines, 15, 20);
+
+    doc.save("סיכום_בקשות.pdf");
+  }
+</script>
+
+</body>
+</html>
